@@ -50,3 +50,37 @@ Planned build steps:
 | Date       | Change                                               |
 | ---------- | ---------------------------------------------------- |
 | 2026-06-28 | Created initial SOC Analyst Lab repository structure |
+
+## Windows 11 Lab VM Baseline
+
+The Windows 11 lab endpoint was successfully installed and configured.
+
+VM baseline details:
+
+```text
+VM Name: SOC-WIN11-01
+Operating System: Windows 11
+Virtualization Platform: Hyper-V
+Primary Admin Account: socadmin
+Standard Test Account: testuser
+Network: Default Switch
+```
+
+Local accounts:
+
+```text
+socadmin - Local administrator account used for lab administration
+testuser - Standard local user account used to generate test activity
+```
+
+A baseline checkpoint was created after the Windows installation and initial account setup.
+
+Checkpoint name:
+
+```text
+Baseline-Windows-Installed
+```
+
+Purpose:
+
+This checkpoint provides a clean restore point before enabling advanced logging, installing Sysmon, forwarding logs to Microsoft Sentinel, or generating simulated security events.
