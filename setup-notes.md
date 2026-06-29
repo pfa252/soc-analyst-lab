@@ -185,3 +185,49 @@ Security note:
 This Azure environment is used only for lab-generated telemetry. No employer, customer, production, or confidential data is connected to this workspace.
 
 
+## Azure Arc Onboarding
+
+The Windows 11 lab endpoint was onboarded to Azure Arc so it can be managed as an Azure-connected machine and used with Azure Monitor Agent.
+
+Onboarded machine:
+
+```text
+Hostname: SOC-WIN11-01
+Azure Resource Type: Azure Arc-enabled machine
+Resource Group: rg-soc-analyst-lab
+Region: Central US
+Connectivity Method: Public endpoint
+```
+
+Purpose:
+
+Azure Arc allows the local Hyper-V lab VM to be managed from Azure even though it is not hosted in Azure. This enables the use of Azure Monitor Agent, Data Collection Rules, and Microsoft Sentinel log ingestion.
+
+Initial issue encountered:
+
+```text
+PowerShell execution policy blocked the downloaded Azure Connected Machine Agent installer script.
+```
+
+Resolution:
+
+```text
+Used a temporary process-scoped PowerShell execution policy bypass.
+```
+
+Command used:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+Validation performed:
+
+```text
+Confirmed SOC-WIN11-01 appeared under Azure Arc machines.
+Confirmed the machine was visible in the rg-soc-analyst-lab resource group.
+```
+
+Security note:
+
+Only the isolated lab virtual machine was onboarded to Azure Arc. No production systems, employer devices, or confidential data sources were connected.
