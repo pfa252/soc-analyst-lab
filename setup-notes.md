@@ -145,3 +145,43 @@ Security note:
 
 Sysmon was installed only on the isolated lab virtual machine. No production systems or employer devices were modified.
 
+## Azure Log Analytics and Microsoft Sentinel Setup
+
+Created the Azure resources required for the SOC Analyst Lab SIEM environment.
+
+Resource group:
+
+```text
+rg-soc-analyst-lab
+```
+
+Log Analytics workspace:
+
+```text
+law-soc-analyst-lab
+```
+
+Region:
+
+```text
+Central US
+```
+
+Microsoft Sentinel was enabled on the Log Analytics workspace.
+
+Cost-control configuration:
+
+```text
+Daily cap: 0.5 GB/day
+Purpose: Prevent unexpected ingestion growth during lab testing
+```
+
+Purpose:
+
+The Log Analytics workspace will store security telemetry collected from the lab endpoint. Microsoft Sentinel will be used as the SIEM for detection engineering, KQL hunting, incident creation, and investigation workflows.
+
+Security note:
+
+This Azure environment is used only for lab-generated telemetry. No employer, customer, production, or confidential data is connected to this workspace.
+
+
