@@ -84,3 +84,64 @@ Baseline-Windows-Installed
 Purpose:
 
 This checkpoint provides a clean restore point before enabling advanced logging, installing Sysmon, forwarding logs to Microsoft Sentinel, or generating simulated security events.
+
+## Sysmon Installation and Validation
+
+Sysmon was installed on the Windows 11 lab endpoint to provide enhanced endpoint telemetry.
+
+Configured endpoint:
+
+```text
+Hostname: SOC-WIN11-01
+Operating System: Windows 11
+Purpose: Enhanced endpoint telemetry source
+```
+
+Sysmon installation path:
+
+```text
+C:\SOC-Lab\Sysmon
+```
+
+Sysmon event log:
+
+```text
+Microsoft-Windows-Sysmon/Operational
+```
+
+Validation results:
+
+```text
+Sysmon Service: Running
+Recent Sysmon events confirmed
+```
+
+Observed Sysmon event IDs:
+
+```text
+Event ID 1  - Process creation
+Event ID 4  - Sysmon service state changed
+Event ID 11 - File created
+Event ID 13 - Registry value set
+```
+
+Reason for installing Sysmon:
+
+Sysmon provides detailed endpoint visibility beyond standard Windows event logs. This includes process creation, parent-child process relationships, file creation, registry activity, and other endpoint behavior useful for detection engineering and incident response.
+
+Detection scenarios supported by Sysmon:
+
+```text
+Suspicious process creation
+PowerShell child process activity
+Command shell execution
+Suspicious file creation
+Registry modification activity
+Potential persistence activity
+Malware-like behavior patterns
+```
+
+Security note:
+
+Sysmon was installed only on the isolated lab virtual machine. No production systems or employer devices were modified.
+
