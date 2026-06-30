@@ -231,3 +231,81 @@ Confirmed the machine was visible in the rg-soc-analyst-lab resource group.
 Security note:
 
 Only the isolated lab virtual machine was onboarded to Azure Arc. No production systems, employer devices, or confidential data sources were connected.
+
+## Windows Security Event Ingestion
+
+Windows Security Event logs were successfully ingested from the lab endpoint into Microsoft Sentinel.
+
+Data flow:
+
+```text
+SOC-WIN11-01
+   |
+   | Windows Security Event Logs
+   v
+Azure Arc-enabled machine
+   |
+   | Azure Monitor Agent
+   v
+Data Collection Rule
+   |
+   v
+Log Analytics Workspace
+   |
+   v
+Microsoft Sentinel
+```
+
+Data Collection Rule:
+
+```text
+dcr-windows-security-events-soc-lab
+```
+
+Source endpoint:
+
+```text
+SOC-WIN11-01
+```
+
+Destination table:
+
+```text
+SecurityEvent
+```
+
+Validation query:
+
+```kql
+SecurityEvent
+| where Computer has "SOC-WIN11-01"
+| where EventID in (4624, 4625, 4672, 4688, 4689, 4720, 4732)
+| project TimeGenerated, Computer, EventID, Activity, Account, LogonTypeName, Process, CommandLine
+| order by TimeGenerated desc
+```
+
+Validation results:
+
+```text
+Confirmed Windows Security Events were visible in Microsoft Sentinel.
+Confirmed events from SOC-WIN11-01 appeared in the SecurityEvent table.
+Observed process creation and process termination events.
+Observed privileged logon-related events.
+```
+
+Observed event IDs:
+
+```text
+4672 - Special privileges assigned to new logon
+4688 - Process creation
+4689 - Process termination
+```
+
+Purpose:
+
+This confirms the lab endpoint is successfully forwarding Windows Security telemetry into Microsoft Sentinel. These logs will be used for KQL detection writing, alert creation, threat hunting, and incident response documentation.
+
+Security note:
+
+Only lab-generated events from the isolated SOC-WIN11-01 virtual machine were ingested. No production systems, employer devices, or confidential data sources were connected.
+
