@@ -309,3 +309,64 @@ Security note:
 
 Only lab-generated events from the isolated SOC-WIN11-01 virtual machine were ingested. No production systems, employer devices, or confidential data sources were connected.
 
+
+## Sysmon and PowerShell Event Ingestion
+
+Configured Azure Monitor Agent data collection for additional Windows operational event logs.
+
+Data Collection Rule:
+
+```text
+dcr-windows-operational-events-soc-lab
+```
+
+Collected event logs:
+
+```text
+Microsoft-Windows-Sysmon/Operational
+Microsoft-Windows-PowerShell/Operational
+```
+
+Destination workspace:
+
+```text
+law-soc-analyst-lab
+```
+
+Destination table:
+
+```text
+Event
+```
+
+Validation query:
+
+```kql
+Event
+| where Computer has "SOC-WIN11-01"
+| summarize EventCount=count(), LastSeen=max(TimeGenerated) by EventLog, Source
+| order by LastSeen desc
+```
+
+Validation results:
+
+```text
+Confirmed PowerShell Operational events were visible in the Event table.
+Confirmed Sysmon Operational events were visible in the Event table.
+Confirmed SOC-WIN11-01 was the source computer.
+```
+
+Observed event logs:
+
+```text
+Microsoft-Windows-PowerShell/Operational
+Microsoft-Windows-Sysmon/Operational
+```
+
+Purpose:
+
+This completed the lab's endpoint telemetry ingestion path for Windows Security Events, Sysmon events, and PowerShell Operational events. These logs will support detection engineering, threat hunting, and incident response exercises.
+
+Security note:
+
+The new Data Collection Rule collects only lab-generated operational logs from SOC-WIN11-01. The Security log was intentionally not added to this rule to avoid duplicate ingestion because Windows Security Events are already collected through the Microsoft Sentinel Windows Security Events via AMA connector.
